@@ -3,31 +3,30 @@ using UnityEngine;
 
 public class CameraSwitcher : MonoBehaviour
 {
-    private List<Camera> cameraList;
+    public List<Camera> cameras;
 
     void Start()
     {
-        cameraList = new List<Camera>(FindObjectsOfType<Camera>());
-
-        if (cameraList.Count > 0)
-        {
-            SetActiveCamera(cameraList[0]);
-        }
+        ActivateCamera(0);
     }
 
     void Update()
     {
-        for (int index = 0; index < cameraList.Count && index < 10; index++)
+        for (int i = 0; i < cameras.Count; i++)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + index))
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
             {
-                SetActiveCamera(cameraList[index]);
+                ActivateCamera(i);
+                break;
             }
         }
     }
 
-    void SetActiveCamera(Camera newActiveCamera)
+    void ActivateCamera(int index)
     {
-        foreach (Camera cam in cameraList)
+        for (int i = 0; i < cameras.Count; i++)
         {
-            cam.gameObject.SetActive(false)
+            cameras[i].enabled = (i == index);
+        }
+    }
+}
